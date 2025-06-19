@@ -1,18 +1,104 @@
 
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { categories } from '../data/products';
+// import { categories } from '../data/products';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import AffiliateLogoMarquee from '../components/AffiliateLogoMarquee';
+
 
 const HomePage = () => {
 
-  // const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [name, setName] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/categories/category')
+      .then((res) => res.json())
+      .then((data) => setCategories(data));
+  }, []);
 
   // useEffect(() => {
-  //   fetch('http://localhost:5000/api/categories')
+  //   fetch('http://localhost:5000/api/users/login')
   //     .then((res) => res.json())
-  //     .then((data) => setCategories(data));
-  // }, []);
+  //     .then((data) => setName(data));
+  //     console.log(name);
+  // }, [name]);
+
+  const carouselItems = [
+    {
+      src: "https://purepng.com/public/uploads/large/29637/logos-amazon-logo.png",
+      alt: "Amazon"
+    },
+    {
+      src: "https://www.citypng.com/public/uploads/preview/hd-flipkart-round-logo-icon-transparent-png-27954.png",
+      alt: "Flipkart"
+    },
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Myntra_Logo.png",
+      alt: "Myntra"
+    },
+    {
+      src: "https://seeklogo.com/images/A/ajio-logo-3489464374-seeklogo.com.png",
+      alt: "Ajio"
+    },
+    {
+      src: "https://seeklogo.com/images/M/mamaearth-logo-487672A1B6-seeklogo.com.png",
+      alt: "Mamaearth"
+    },
+    {
+      src: "https://seeklogo.com/images/T/tata-cliq-logo-405612A2B0-seeklogo.com.png",
+      alt: "Tata CLiQ"
+    },
+    {
+      src: "https://www.nicepng.com/png/detail/2170-2170_pepperfry-furniture-logo.png",
+      alt: "Pepperfry"
+    },
+    {
+      src: "https://seeklogo.com/images/M/makemytrip-logo-3361110F3E-seeklogo.com.png",
+      alt: "MakeMyTrip"
+    },
+    {
+      src: "https://seeklogo.com/images/F/firstcry-logo-3866785A0F-seeklogo.com.png",
+      alt: "FirstCry"
+    },
+    {
+      src: "https://seeklogo.com/images/I/indiamart-logo-349456C9E8-seeklogo.com.png",
+      alt: "IndiaMART"
+    },
+    {
+      src: "https://inrdeals.com/assets/img/logo.png",
+      alt: "INRdeals"
+    },
+    {
+      src: "https://earnkaro.com/static/media/logo.9e8c5d66.svg",
+      alt: "EarnKaro"
+    },
+    {
+      src: "https://www.vcommission.com/wp-content/uploads/2020/04/vcommission-logo.png",
+      alt: "vCommission"
+    },
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg",
+      alt: "eBay"
+    },
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Shopify_logo_2018.svg",
+      alt: "Shopify"
+    },
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Rakuten_Global_Brand_Logo.png",
+      alt: "Rakuten"
+    },
+    {
+      src: "https://www.clickbank.com/wp-content/themes/clickbank/assets/images/clickbank-logo.svg",
+      alt: "ClickBank"
+    }
+  ];
+
+
+
+
 
 
 
@@ -20,9 +106,11 @@ const HomePage = () => {
     <div>
       <Navbar />
 
+
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container text-center py-5">
+          {/* <h1 className='text-center'>Welcome {name}</h1> */}
           <h1 className="display-4 fw-bold mb-4">Quality Products, Thoroughly Researched</h1>
           <p className="lead mb-4">
             We save you time by testing and researching products so you can shop with confidence.
@@ -32,7 +120,13 @@ const HomePage = () => {
             Explore Products
           </Link>
         </div>
+
       </section>
+      <div className='mt-5'>
+        <AffiliateLogoMarquee />
+      </div>
+
+
 
       {/* How It Works */}
       <section className="py-5 bg-light">
@@ -87,9 +181,9 @@ const HomePage = () => {
         <div className="container">
           <h2 className="text-center mb-5">Shop By Category</h2>
           <div className="row g-4">
-            {categories.map((category) => (
-              <div key={category.id} className="col-md-4 col-lg-4 mb-4">
-                <Link to={`/products/${category.id}`} className="text-decoration-none">
+            {categories.map((category, index) => (
+              <div key={index} className="col-md-4 col-lg-4 mb-4">
+                <Link to={`/products/${category.name}`} className="text-decoration-none">
                   <div className="card category-card h-100 shadow-sm border-0 overflow-hidden">
                     <img
                       src={category.image}

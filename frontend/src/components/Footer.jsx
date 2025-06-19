@@ -6,10 +6,10 @@ const Footer = () => {
     <footer className="footer mt-auto">
       <div className="container">
         <div className="row">
-          <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <div className="col-lg-6 col-md-6 mb-4 mb-md-0">
             <h5 className="text-uppercase mb-4">QualityPicks</h5>
             <p>
-              We save your time by doing the product research for you. 
+              We save your time by doing the product research for you.
               Every product on our site has been thoroughly vetted for quality and value.
             </p>
             <div className="social-icons mt-4">
@@ -20,11 +20,11 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="col-lg-2 col-md-6 mb-4 mb-md-0">
+          <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 className="text-uppercase mb-4">Quick Links</h5>
             <ul className="list-unstyled mb-0">
               <li className="mb-2">
-                <Link to="/main" className="text-white text-decoration-none">Home</Link>
+                <Link to="/" className="text-white text-decoration-none">Home</Link>
               </li>
               <li className="mb-2">
                 <Link to="/products/all" className="text-white text-decoration-none">All Products</Link>
@@ -35,6 +35,11 @@ const Footer = () => {
               <li className="mb-2">
                 <Link to="/contact" className="text-white text-decoration-none">Contact Us</Link>
               </li>
+              {localStorage.getItem("isLoggedIn") === "true" && (
+                <Link to="/cart" className="text-decoration-none text-white mb-auto">
+                  My Cart
+                </Link>
+              )}
             </ul>
           </div>
 
@@ -59,7 +64,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
+          {/* <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
             <h5 className="text-uppercase mb-4">Newsletter</h5>
             <p>Subscribe to receive updates on new curated products and exclusive deals.</p>
             <div className="form-outline form-white mb-4">
@@ -68,7 +73,7 @@ const Footer = () => {
                 <button className="btn btn-accent" type="button">Subscribe</button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

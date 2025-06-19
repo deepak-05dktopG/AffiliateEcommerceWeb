@@ -1,22 +1,23 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
-const connectDB = require('./config/db')
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
+const connectDB = require("./config/db");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// DB connection
-// mongoose.connect(process.env.MONGO_URI)
-//   .then(() => console.log('✅ MongoDB connected'))
-//   .catch((err) => console.error('❌ DB Error:', err.message));
 connectDB();
 
 // Routes
-app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/categories', require('./routes/categories'));
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/products", require("./routes/products"));
+app.use("/api/categories", require("./routes/categories"));
+app.use("/api/requestproduct", require("./routes/requests"));
+app.use("/api/admin", require("./routes/userRoutes"));
+app.use("/api/cart", require("./routes/cartRoutes")); // Mount all cart routes under /api/cart
+app.use("/api/contact", require("./routes/contact"));
 
 
 const PORT = process.env.PORT || 5000;
