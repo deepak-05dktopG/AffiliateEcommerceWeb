@@ -27,7 +27,7 @@ const sendEmail = async (to, subject, htmlContent) => {
   }
 };
 
-const sendEmailtoAdmin = async ( to, subject, message) => {
+const sendEmailtoAdmin = async (to, subject, message) => {
   try {
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -52,4 +52,4 @@ const sendEmailtoAdmin = async ( to, subject, message) => {
   }
 };
 
-module.exports = {sendEmail,sendEmailtoAdmin};
+module.exports = { sendEmail, sendEmailtoAdmin };

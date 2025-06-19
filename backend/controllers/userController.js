@@ -1,7 +1,17 @@
 const User = require("../models/User");
-const {sendEmail} = require("../utils/emailSender");
-const jwt = require('jsonwebtoken');
+const { sendEmail } = require("../utils/emailSender");
 
+//get user
+const getUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user" });
+  }
+};
 
 // Register user
 const registerUser = async (req, res) => {
@@ -75,4 +85,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser, getUser};

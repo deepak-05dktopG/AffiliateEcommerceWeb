@@ -11,7 +11,7 @@ function Register() {
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
 
-
+  //Register
   const register = async (e) => {
     setLoad(true);
     e.preventDefault();
@@ -48,7 +48,7 @@ function Register() {
     }
   };
 
-
+//**************************Frontend User***********************************************************************************************/
   return (
     <div
       className="container-fluid min-vh-100 d-flex align-items-center justify-content-center"

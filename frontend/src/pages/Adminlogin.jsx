@@ -10,6 +10,7 @@ function Adminlogin() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  //admin post method for login
   const adminLogin = async (e) => {
     e.preventDefault();
     const res = await fetch('http://localhost:5000/api/admin/adminLogin', {

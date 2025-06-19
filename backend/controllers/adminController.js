@@ -7,12 +7,10 @@ const adminLogin = async (req, res) => {
   try {
     const admin = await Admin.findOne({ email });
     if (!admin)
-      return res
-        .status(404)
-        .json({
-          message:
-            "🚫 Access Denied: Authorized QualityPics Administrators Only 🙅‍♂️🔒",
-        });
+      return res.status(404).json({
+        message:
+          "🚫 Access Denied: Authorized QualityPics Administrators Only 🙅‍♂️🔒",
+      });
     // Compare the provided password with the hashed password in the database
     const isValid = await bycrpt.compare(password, admin.password);
     if (!isValid)
@@ -28,6 +26,6 @@ const adminLogin = async (req, res) => {
 //   password: 'deepakkumar@FF009' // this will be hashed before save
 // });
 
-// newAdmin.save(); // 🔒 Password gets hashed here
+// newAdmin.save(); // Password gets hashed here
 
 module.exports = { adminLogin };

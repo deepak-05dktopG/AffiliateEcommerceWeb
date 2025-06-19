@@ -1,9 +1,8 @@
-
 :root {
   --primary: #003366;
-  --secondary: #FF6B35;
-  --accent: #FFCA28;
-  --light: #F8F9FA;
+  --secondary: #ff6b35;
+  --accent: #ffca28;
+  --light: #f8f9fa;
   --dark: #212529;
   --success: #28a745;
   --info: #17a2b8;
@@ -12,7 +11,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: var(--dark);
   background-color: var(--light);
   margin: 0;

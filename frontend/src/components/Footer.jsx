@@ -64,16 +64,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
-            <h5 className="text-uppercase mb-4">Newsletter</h5>
-            <p>Subscribe to receive updates on new curated products and exclusive deals.</p>
-            <div className="form-outline form-white mb-4">
-              <div className="input-group">
-                <input type="email" className="form-control" placeholder="Your email" aria-label="Your email" />
-                <button className="btn btn-accent" type="button">Subscribe</button>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
 

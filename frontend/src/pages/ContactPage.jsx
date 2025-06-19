@@ -10,12 +10,12 @@ const ContactPage = () => {
     subject: '',
     message: ''
   });
-
   const [isListening, setIsListening] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
 
+  //Onchange for Input Field
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -32,6 +32,7 @@ const ContactPage = () => {
     }
   };
 
+  //Validate Input fields
   const validateForm = () => {
     const newErrors = {};
 
@@ -57,21 +58,22 @@ const ContactPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async(e) => {
+  //Form Submission from Contact Page
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
     setIsSubmitting(true)
-    
+
     try {
       const res = await fetch('http://localhost:5000/api/contact/post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      
+
       const data = await res.json();
       console.log(data);
 
@@ -92,6 +94,7 @@ const ContactPage = () => {
 
   };
 
+  //Speech to Text
   const handleVoiceSearch = () => {
     const recognition = new window.webkitSpeechRecognition(); // for Chrome
     recognition.continuous = false;

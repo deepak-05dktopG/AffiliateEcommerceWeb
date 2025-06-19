@@ -1,14 +1,13 @@
 const Contact = require("../models/contact");
 const { sendEmailtoAdmin } = require("../utils/emailSender");
+const { sendEmail } = require("../utils/emailSender");
 
 // POST: Save contact message
 exports.saveContact = async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
-
     const newContact = new Contact({ name, email, subject, message });
     await newContact.save();
-
     const adminMessage = `<h3 style="color: #2c3e50;">📌 Message Summary</h3>
       <table style="width: 100%; border-collapse: collapse; background-color: #fff; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
         <tbody>
@@ -30,13 +29,11 @@ exports.saveContact = async (req, res) => {
           </tr>
         </tbody>
       </table> `;
-
     await sendEmailtoAdmin(
       process.env.EMAIL_USER,
       `From QualityPics Contact Page: ${subject}`,
       adminMessage
     );
-
     res.status(201).json({ message: "Contact message saved successfully." });
   } catch (error) {
     console.error("Save Contact Error:", error);
@@ -73,18 +70,11 @@ exports.deleteContact = async (req, res) => {
 };
 
 //reply to messages through gmail
-const { sendEmail } = require("../utils/emailSender");
-
 exports.replyToContact = async (req, res) => {
   const { email, name, subject, reply } = req.body;
 
-  // const { replyMessage } = req.body;
-  // const contactId = req.params.id;
-
-
   try {
-    const htmlContent = `
-  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 650px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    const htmlContent = `<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 650px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
     <div style="text-align: center; margin-bottom: 30px;">
       <h2 style="color: #007bff; font-size: 26px;">📬 Reply from <span style="color:#333;">QualityPics</span></h2>
       <p style="font-size: 16px; color: #777;">We're here to help you with your query</p>
@@ -109,21 +99,18 @@ exports.replyToContact = async (req, res) => {
     <p style="margin-top: 30px; font-size: 14px; color: #999; text-align: center;">
       Thanks for contacting us!<br/>— The <strong>QualityPics</strong> Team 💙
     </p>
-  </div>
-`;
-
+  </div>`;
     await sendEmail(email, `Reply for: ${subject}`, htmlContent);
 
     const updated = await Contact.findByIdAndUpdate(
       req.params.id,
       {
         replied: true,
-        replyMessage:reply,
+        replyMessage: reply,
         repliedAt: new Date(),
       },
-      { new: true },
+      { new: true }
     );
-
 
     if (!updated) {
       return res.status(404).json({ message: "Contact not found" });

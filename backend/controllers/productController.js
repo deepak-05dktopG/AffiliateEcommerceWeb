@@ -89,7 +89,7 @@ const updateProduct = async (req, res) => {
       stock,
       features,
       research,
-      productimages
+      productimages,
     } = req.body;
 
     const updated = await Product.findByIdAndUpdate(
@@ -108,7 +108,7 @@ const updateProduct = async (req, res) => {
         stock,
         features,
         research,
-        productimages
+        productimages,
       },
       { new: true } // Return updated product
     );

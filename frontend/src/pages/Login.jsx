@@ -9,6 +9,7 @@ function Login() {
   const navigate = useNavigate();
   const [load, setLoad] = useState(false);
 
+  //POST method for login
   const login = async (e) => {
     e.preventDefault();
 
@@ -48,6 +49,7 @@ function Login() {
     }
   };
 
+  //******************Frontend UI********************************************************************************************/
   return (
     // <div className="container d-flex align-items-center justify-content-center min-vh-100 bg-light">
     //   <div className="row shadow bg-white rounded overflow-hidden w-100" style={{ maxWidth: '900px' }}>
@@ -94,7 +96,6 @@ function Login() {
     //     </div>
     //   </div>
     // </div>
-
     <div
       className="container-fluid min-vh-100 d-flex align-items-center justify-content-center"
       style={{

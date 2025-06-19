@@ -6,7 +6,7 @@ exports.addCategory = async (req, res) => {
     const category = new Category({
       name,
       image,
-      description
+      description,
     });
     await category.save();
     res.status(201).json(category);
@@ -15,7 +15,6 @@ exports.addCategory = async (req, res) => {
     res.status(500).json({ message: "Server error while creating category" });
   }
 };
-
 
 // GET all categories
 exports.getCategories = async (req, res) => {
@@ -28,7 +27,6 @@ exports.getCategories = async (req, res) => {
 };
 
 //Delete categories
-//delete products
 exports.deleteCategories = async (req, res) => {
   try {
     const id = req.params.id;
@@ -40,20 +38,14 @@ exports.deleteCategories = async (req, res) => {
   }
 };
 
-//update categories
-// @desc    Update category
-// @route   PUT /api/categories/:id
-// @access  Public
 exports.updateCategories = async (req, res) => {
   try {
     const { name, image, description } = req.body;
-
     const updated = await Category.findByIdAndUpdate(
       req.params.id,
       { name, image, description },
       { new: true } // Return updated document
     );
-
     if (!updated) {
       return res.status(404).json({ message: "Category not found" });
     }

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt');
-
+const bcrypt = require("bcrypt");
 
 const adminSchema = new mongoose.Schema({
   email: {
@@ -14,9 +13,8 @@ const adminSchema = new mongoose.Schema({
   },
 });
 
-
-adminSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+adminSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
   try {
     const salt = await bcrypt.genSalt(10); // 10 rounds of salt
     this.password = await bcrypt.hash(this.password, salt);

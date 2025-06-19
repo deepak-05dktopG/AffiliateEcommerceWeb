@@ -9,29 +9,23 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Get cart items on load
-  useEffect(() => {
-    const fetchCart = async () => {
-      const userId = localStorage.getItem("userId");
-      try {
-        const res = await fetch(`http://localhost:5000/api/cart/${userId}`, {
-          method: 'GET',
-          // credentials: 'include', // important for cookies
-        });
+  //READ and DELETE Operation for Cart Products
+  const fetchCart = async () => {
+    const userId = localStorage.getItem("userId");
+    try {
+      const res = await fetch(`http://localhost:5000/api/cart/${userId}`, {
+        method: 'GET',
+        // credentials: 'include', // important for cookies
+      });
 
-        const data = await res.json();
-        setCartItems(data || []);
-      } catch (error) {
-        console.error('Failed to fetch cart:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCart();
-  }, []);
-
-  // ✅ Remove from cart
+      const data = await res.json();
+      setCartItems(data || []);
+    } catch (error) {
+      console.error('Failed to fetch cart:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleRemove = async (productId) => {
     const userId = localStorage.getItem("userId");
     try {
@@ -62,7 +56,12 @@ const CartPage = () => {
     }
   };
 
-  // ✅ UI
+  //Mount Cart Products
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  //***************************Frontend UI*********************************************************************************8
   return (
     <>
       <Navbar />
@@ -123,7 +122,7 @@ const CartPage = () => {
 
         )}
       </div>
-      
+
       <Footer />
     </>
   );

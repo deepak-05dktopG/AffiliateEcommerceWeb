@@ -1,17 +1,37 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import { categories } from '../data/products';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AffiliateLogoMarquee from '../components/AffiliateLogoMarquee';
+import axios from 'axios';
 
 
 const HomePage = () => {
 
   const [categories, setCategories] = useState([]);
-  const [name, setName] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
 
+  //READ User by their ID
+  const fetchUser = async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    try {
+      const res = await axios.get(`http://localhost:5000/api/users/get/${userId}`);
+      setUserInfo(res.data); // ✅ Store user data
+
+    } catch (err) {
+      console.error("Error fetching user:", err);
+      setUserInfo(null); // ✅ Reset user data on error
+    }
+  };
+  //mount for User
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  //READ Categories
   useEffect(() => {
     fetch('http://localhost:5000/api/categories/category')
       .then((res) => res.json())
@@ -25,6 +45,8 @@ const HomePage = () => {
   //     console.log(name);
   // }, [name]);
 
+
+  //corousel items for affiliate partners
   const carouselItems = [
     {
       src: "https://purepng.com/public/uploads/large/29637/logos-amazon-logo.png",
@@ -97,20 +119,29 @@ const HomePage = () => {
   ];
 
 
-
-
-
-
-
+  //*************Frontend UI******************************************************************************************/
   return (
     <div>
       <Navbar />
-
-
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container text-center py-5">
-          {/* <h1 className='text-center'>Welcome {name}</h1> */}
+          {userInfo && (
+            <div
+              className="mx-auto mb-4 p-4 shadow rounded-4"
+              style={{
+                maxWidth: '600px',
+                borderLeft: '6px solid #0d6efd',
+              }}
+            >
+              <h4 className="fw-semibold mb-2 text-dark">
+                👋 Hello, <span className="text-warning">{userInfo.name} </span>!
+              </h4>
+              <p className="text-secondary mb-0" style={{ fontSize: '1rem' }}>
+                Ready to discover smart shopping choices? We've handpicked the best for you. 🛍️
+              </p>
+            </div>
+          )}
           <h1 className="display-4 fw-bold mb-4">Quality Products, Thoroughly Researched</h1>
           <p className="lead mb-4">
             We save you time by testing and researching products so you can shop with confidence.
@@ -125,8 +156,6 @@ const HomePage = () => {
       <div className='mt-5'>
         <AffiliateLogoMarquee />
       </div>
-
-
 
       {/* How It Works */}
       <section className="py-5 bg-light">

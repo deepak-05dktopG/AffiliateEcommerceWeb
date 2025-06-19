@@ -1,9 +1,6 @@
 const RequestProduct = require("../models/request");
 const { sendEmail } = require("../utils/emailSender");
 
-// @desc    Submit a new product request
-// @route   POST /api/requestproduct/request
-// @access  Public
 const submitProductRequest = async (req, res) => {
   try {
     const {

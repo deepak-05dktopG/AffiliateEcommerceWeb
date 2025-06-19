@@ -19,21 +19,19 @@ const RequestProductPage = () => {
     additionalInfo: ''
   });
 
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
   const [isListening, setIsListening] = useState(false);
   const [isListening1, setIsListening1] = useState(false);
 
-
+  //Onchange for input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-
     // Clear the error for this field when user types
     if (errors[name]) {
       setErrors(prev => ({
@@ -43,6 +41,7 @@ const RequestProductPage = () => {
     }
   };
 
+  //for Form Validation
   const validateForm = () => {
     const newErrors = {};
 
@@ -68,6 +67,7 @@ const RequestProductPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  //For For Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -136,6 +136,7 @@ const RequestProductPage = () => {
 
   };
 
+  //Speech to text for inputbox
   const handleVoiceSearch = () => {
     const recognition = new window.webkitSpeechRecognition(); // for Chrome
     recognition.continuous = false;
@@ -171,6 +172,7 @@ const RequestProductPage = () => {
 
 
   }
+  //Speech to text for another inputbox
   const handleVoiceSearch1 = () => {
     const recognition = new window.webkitSpeechRecognition(); // for Chrome
     recognition.continuous = false;
@@ -207,9 +209,7 @@ const RequestProductPage = () => {
 
   }
 
-
-
-
+  //********Frontend UI for after Form Submission***************/
   if (isSubmitted) {
     return (
       <div className="container py-5">
@@ -232,7 +232,7 @@ const RequestProductPage = () => {
               <Link to="/products/all" className="btn btn-primary">
                 Browse Products
               </Link>
-              <span onClick={()=>{setIsSubmitted(false); setIsSubmitting(false)}} >
+              <span onClick={() => { setIsSubmitted(false); setIsSubmitting(false) }} >
                 <Link to="/request-product" className="btn btn-outline-warning">
                   Request One More Products
                 </Link>
@@ -244,6 +244,7 @@ const RequestProductPage = () => {
     );
   }
 
+  //*****************************Frontend UI******************************************************************************************/
   return (
     <>
       <Navbar />

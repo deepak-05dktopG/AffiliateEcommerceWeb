@@ -1,9 +1,40 @@
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
-const Navbar = ({ setSearchParams }) => {
+
+const Navbar = () => {
   const navigate = useNavigate();
+
+  //logout function
+  const logout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log me out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.setItem('userId', '')
+        Swal.fire({
+          title: 'Logged out!',
+          text: 'You have been successfully logged out.',
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+        });
+        navigate('/login');
+      }
+    });
+  }
 
 
   return (
@@ -57,11 +88,20 @@ const Navbar = ({ setSearchParams }) => {
             <li className="nav-item">
               <Link className="nav-link" to="/contact">Contact</Link>
             </li>
-            {localStorage.getItem("isLoggedIn") === "true" && (
-              <Link to="/cart" className="btn btn-outline-warning border-0">
-                🛒 My Cart
-              </Link>
-            )}
+            {localStorage.getItem("isLoggedIn") === "true" ? (
+              <>
+                <button onClick={() => navigate('/cart')} className="btn btn-sm btn-outline-warning border-">
+                  🛒 My Cart
+                </button>
+                <button className='btn btn-sm btn-outline-danger border- ms-1' onClick={logout}>
+                  Logout
+                </button>
+              </>
+            ) :
+              <button onClick={() => navigate('/login')} className="btn btn-outline-success border-0">
+                Login
+              </button>
+            }
 
           </ul>
 

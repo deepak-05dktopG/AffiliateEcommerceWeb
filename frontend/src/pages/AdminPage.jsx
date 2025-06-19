@@ -11,14 +11,7 @@ const AdminPage = () => {
     const [searchCategory, setSearchCategory] = useState("");
     const [messages, setMessages] = useState([]);
 
-    //category update state
-    const [update, setUpdate] = useState({
-        status: true,
-        edit_id: "",
-        edit_name: "",
-        edit_image: "",
-        edit_description: "",
-    });
+    //product and product update state
     const [productUpdate, setProductUpdate] = useState({
         status: true,
         edit_id: "",
@@ -37,50 +30,31 @@ const AdminPage = () => {
         edit_research: [],
         edit_productimages: []
     });
-
     const [newProduct, setNewProduct] = useState({
         name: '', price: '', category: '', image: '', rating: '', reviewCount: '', description: '', details: '', affiliateLink: '', affiliatefrom: '', stock: '', features: [], research: [], productimages: []
     });
+
+    //category and category update state
     const [categoryInput, setCategoryInput] = useState({ name: '', image: '', description: '' });
+    const [update, setUpdate] = useState({
+        status: true,
+        edit_id: "",
+        edit_name: "",
+        edit_image: "",
+        edit_description: "",
+    });
 
-
-
-    const filteredProducts = products.filter(product => (
-        product.name.toLowerCase().includes(searchProduct.toLowerCase()) || product.category.toLowerCase().includes(searchProduct.toLowerCase()) || product.description.toLowerCase().includes(searchProduct.toLowerCase()) || product.details.toLowerCase().includes(searchProduct.toLowerCase()) || product.research.some(research => research.toLowerCase().includes(searchProduct.toLowerCase())) || product.features.some(feature => feature.toLowerCase().includes(searchProduct.toLowerCase()))
-    ));
-
+    //CRUD Operations and filtered Products
     const fetchProducts = async () => {
         const res = await axios.get('http://localhost:5000/api/products/items');
         setProducts(res.data);
     };
-
-
-    const fetchCategories = async () => {
-        const res = await axios.get('http://localhost:5000/api/categories/category');
-        setCategories(res.data);
-    };
-    const filteredCategory = categories.filter(category =>
-        category.name.toLowerCase().includes(searchCategory.toLowerCase())
-    );
-
-    const fetchRequests = async () => {
-        const res = await axios.get('http://localhost:5000/api/requestproduct/all');
-        setRequests(res.data);
-    };
-
-    useEffect(() => {
-        fetchProducts();
-        fetchCategories();
-        fetchRequests();
-    }, []);
-
     const addProduct = async () => {
         const res = await axios.post('http://localhost:5000/api/products', newProduct)
         alert("Product Added Successfully");
         setProductInput({ name: '', price: '', category: '', image: '', rating: '', reviewCount: '', description: '', details: '', affiliateLink: '', affiliatefrom: '', stock: '', features: [], research: [], edit_productimages: [] });
         fetchProducts();
     };
-
     const deleteProduct = async (id) => {
         if (window.confirm("Are you sure want to delete ?")) {
             await axios.delete(`http://localhost:5000/api/products/items/${id}`);
@@ -116,7 +90,15 @@ const AdminPage = () => {
             setProductUpdate({ status: true })
         }
     };
+    const filteredProducts = products.filter(product => (
+        product.name.toLowerCase().includes(searchProduct.toLowerCase()) || product.category.toLowerCase().includes(searchProduct.toLowerCase()) || product.description.toLowerCase().includes(searchProduct.toLowerCase()) || product.details.toLowerCase().includes(searchProduct.toLowerCase()) || product.research.some(research => research.toLowerCase().includes(searchProduct.toLowerCase())) || product.features.some(feature => feature.toLowerCase().includes(searchProduct.toLowerCase()))
+    ));
 
+    //CRUD Operations and Filtered Categories
+    const fetchCategories = async () => {
+        const res = await axios.get('http://localhost:5000/api/categories/category');
+        setCategories(res.data);
+    };
     const addCategory = async () => {
         await axios.post('http://localhost:5000/api/categories', categoryInput);
         alert(`Category Added Successfully, you need to add this ${categoryInput.name} category in you add prodect categories section..`);
@@ -147,8 +129,16 @@ const AdminPage = () => {
             setUpdate({ status: true })
         }
     }
+    const filteredCategory = categories.filter(category =>
+        category.name.toLowerCase().includes(searchCategory.toLowerCase())
+    );
 
 
+    //READ, DELETE and Reply to the Customer For Product Request
+    const fetchRequests = async () => {
+        const res = await axios.get('http://localhost:5000/api/requestproduct/all');
+        setRequests(res.data);
+    };
     const deleteRequest = async (id) => {
         if (window.confirm(`Are you sure want to delete ?`)) {
             await axios.delete(`http://localhost:5000/api/requestproduct/delete/${id}`);
@@ -156,6 +146,35 @@ const AdminPage = () => {
         fetchRequests();
     };
 
+    const handleReplyProduct = async (message) => {
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/requestproduct/reply/${message._id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: message.email,
+                    name: message.name,
+                    product: message.productName,
+                }),
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                Swal.fire('✅ Message sent successfully!', data.message, 'success');
+                fetchRequests();
+            } else {
+                Swal.fire('❌ Error', data.message, 'error');
+            }
+
+        } catch (error) {
+            console.error('Reply failed:', error);
+            Swal.fire('❌ Error', 'Something went wrong.', 'error');
+        }
+
+    };
+
+    //READ, DELETE, Replay to the customer who contact us
     const fetchMessages = async () => {
         try {
             const res = await fetch('http://localhost:5000/api/contact/get');
@@ -165,7 +184,6 @@ const AdminPage = () => {
             console.error('Fetch error:', error);
         }
     };
-
     const handleDelete = async (id) => {
 
         if (window.confirm(`Are you sure want to delete ?`)) {
@@ -173,12 +191,6 @@ const AdminPage = () => {
         }
         fetchMessages();
     };
-
-    useEffect(() => {
-        fetchMessages();
-    }, []);
-
-
     const handleReply = async (message) => {
         const { value: replyText } = await Swal.fire({
             title: `Reply to ${message.name}`,
@@ -217,36 +229,15 @@ const AdminPage = () => {
         }
     };
 
-    const handleReplyProduct = async (message) => {
+    //fetching products, category and requests and contact messages on mount
+    useEffect(() => {
+        fetchProducts();
+        fetchCategories();
+        fetchRequests();
+        fetchMessages();
+    }, []);
 
-        try {
-            const res = await fetch(`http://localhost:5000/api/requestproduct/reply/${message._id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: message.email,
-                    name: message.name,
-                    product: message.productName,
-                }),
-            });
-            const data = await res.json();
-
-            if (res.ok) {
-                Swal.fire('✅ Message sent successfully!', data.message, 'success');
-                fetchRequests();
-            } else {
-                Swal.fire('❌ Error', data.message, 'error');
-            }
-
-        } catch (error) {
-            console.error('Reply failed:', error);
-            Swal.fire('❌ Error', 'Something went wrong.', 'error');
-        }
-
-    };
-
-
-
+    //********************************************Frontend UI************************************************************************************************************************************************8
     return (
         <div style={{ padding: '20px', fontFamily: 'Arial' }}>
             {/* header sectipon */}
@@ -720,7 +711,6 @@ const AdminPage = () => {
             )}
 
             {/* category page admin */}
-
             {section === 'categories' && (
                 <div>
                     <div className=' d-flex justify-content-between align-items-center'>
@@ -892,7 +882,6 @@ const AdminPage = () => {
             )}
 
             {/* request page admin */}
-
             {section === 'requests' && (
                 <div>
                     <h1 className='fw-bold text-warning'>Requested Products</h1>
@@ -947,10 +936,7 @@ const AdminPage = () => {
                 </div>
             )}
 
-
-
             {/* contact page admin */}
-
             {section === 'messages' && (
                 <div>
                     <h1 className='fw-bold text-danger'>Requested Products</h1>
@@ -1003,9 +989,6 @@ const AdminPage = () => {
                     )}
                 </div>
             )}
-
-
-
         </div>
     );
 };

@@ -2,24 +2,20 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProductById } from '../data/products';
-import CartContext from '../context/CartContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
 const ProductDetailsPage = () => {
   const { id } = useParams();
-  const { addToCart } = useContext(CartContext);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('description');
 
 
+  // READ Product data by ID and Scroll to top when component mounts
   useEffect(() => {
-    // Scroll to top when component mounts
     window.scrollTo(0, 0);
-
-    // Get product data
-    axios.get(`http://localhost:5000/api/products/item/${id}`) // ✅ Call your backend API here
+    axios.get(`http://localhost:5000/api/products/item/${id}`) // Call your backend API here
       .then((res) => setProduct(res.data))
       .catch((err) => console.error("Error fetching product:", err));
 
@@ -28,12 +24,7 @@ const ProductDetailsPage = () => {
     setLoading(false);
   }, [id]);
 
-  const handleAddToCart = () => {
-    if (product) {
-      addToCart(product);
-    }
-  };
-
+  //BUY NOW Button Function
   const handleBuyNow = () => {
     // In a real implementation, you'd track this click
     console.log("Buy now clicked, redirecting to affiliate link");
@@ -42,7 +33,7 @@ const ProductDetailsPage = () => {
       window.open(product.affiliateLink, '_blank');
     }
   };
-
+  //Loading Frontend UI
   if (loading) {
     return (
       <div className="container py-5 text-center">
@@ -52,7 +43,7 @@ const ProductDetailsPage = () => {
       </div>
     );
   }
-
+  //Product Not Found Frontend UI
   if (!product) {
     return (
       <div className="container py-5 text-center">
@@ -65,6 +56,7 @@ const ProductDetailsPage = () => {
     );
   }
 
+  //*****************************Frontend UI****************************************************************************88*/
   return (
     <>
       <Navbar />
@@ -88,7 +80,7 @@ const ProductDetailsPage = () => {
               <div id="carouselExampleAutoplaying" className="carousel carousel-dark slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
                   {product.productimages.map((item, index) => (
-                    <div key={index} className="carousel-item active" data-bs-interval="2000">  
+                    <div key={index} className="carousel-item active" data-bs-interval="2000">
                       <img src={item} className="card-img-top img-fluid" style={{ objectFit: "cover", maxHeight: "400px" }} alt="" />
                     </div>
                   ))}
@@ -103,10 +95,6 @@ const ProductDetailsPage = () => {
                 </button>
               </div>
             </div>
-
-
-
-
           </div>
 
           {/* Product Info */}
@@ -256,28 +244,3 @@ const ProductDetailsPage = () => {
 
 export default ProductDetailsPage;
 
-
-
-
-// import { useParams } from "react-router-dom";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-
-// function ProductDetailPage() {
-//   const { id } = useParams(); // ✅ Get ID from URL
-//   const [product, setProduct] = useState(null);
-
-//   useEffect(() => {
-//     axios
-//       .get(`http://localhost:5000/api/products/item/${id}`) // ✅ Make sure this hits your backend
-//       .then((res) => setProduct(res.data))
-//       .catch((err) => console.error("Error fetching product:", err));
-
-//       console.log("Product ID:", id);
-//       console.log("Product Data:", product);
-//   }, [id]);
-
-//   return product ? <div>{product.features}</div> : <div>Loading...{id} dd</div>;
-// }
-
-// export default ProductDetailPage;
