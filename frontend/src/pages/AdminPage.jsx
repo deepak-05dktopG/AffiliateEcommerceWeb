@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const AdminPage = () => {
     const [section, setSection] = useState('products');
@@ -239,9 +240,16 @@ const AdminPage = () => {
 
     //********************************************Frontend UI************************************************************************************************************************************************8
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+        <div style={{ padding: '0px', fontFamily: 'Arial' }}>
             {/* header sectipon */}
+
+            <div className='d-flex justify-content-end'>
+                <Link to={'/login'}>
+                    <small className='btn btn-danger btn-sm rounded-0' onClick={()=>localStorage.removeItem('isAdminLoggedIn')} >Logout</small>
+                </Link>
+            </div>
             <h1 className="mb-4 text-center fw-bold">Admin Dashboard</h1>
+
             <div className="d-flex justify-content-center mb-4 gap-3">
                 <button
                     className={`btn btn-outline-primary${section === 'products' ? ' active' : ''}`}

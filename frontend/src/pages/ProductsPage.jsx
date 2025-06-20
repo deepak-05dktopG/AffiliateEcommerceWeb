@@ -231,8 +231,8 @@ const ProductsPage = () => {
   //**********************Frontend UI*********************************************************************************/
   return (
     <>
-      <Navbar />
-      <div className='blur-bg sticky-top py-2 '>
+        <Navbar />
+      <div className='blur-bg sticky-top py-2 bg-light  '>
         <form className=" container col-12 col-sm-10 col-md-8 col-lg-6 d-flex mt-1" >
           <input
             className="form-control me-2"

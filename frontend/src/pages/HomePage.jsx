@@ -122,19 +122,19 @@ const HomePage = () => {
   //*************Frontend UI******************************************************************************************/
   return (
     <div>
-      <Navbar />
+        <Navbar />
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container text-center py-5">
           {userInfo && (
             <div
-              className="mx-auto mb-4 p-4 shadow rounded-4"
+              className="mx-auto mb-4 p-4 shadow rounded-4 "
               style={{
                 maxWidth: '600px',
                 borderLeft: '6px solid #0d6efd',
               }}
             >
-              <h4 className="fw-semibold mb-2 text-dark">
+              <h4 className="fw-semibold mb-2 text-light">
                 👋 Hello, <span className="text-warning">{userInfo.name} </span>!
               </h4>
               <p className="text-secondary mb-0" style={{ fontSize: '1rem' }}>
@@ -147,7 +147,7 @@ const HomePage = () => {
             We save you time by testing and researching products so you can shop with confidence.
             Every item on our site has been carefully selected for its quality and value.
           </p>
-          <Link to="/products/all" className="btn btn-lg btn-accent">
+          <Link to="/products/all" className="btn btn-lg btn-accent border border-warning">
             Explore Products
           </Link>
         </div>
